@@ -17,6 +17,8 @@ public record BuildRequest(List<string> Packages, string Target, string? Drive, 
 /// <summary>Destination for SD card files: either a ZIP archive or a drive root.</summary>
 interface ISdOutput : IDisposable {
     void Write(string relPath, Stream content);
+    /// <summary>True if the destination already had this file before the build started.</summary>
+    bool ExistedBefore(string relPath);
     int FileCount { get; }
 }
 
@@ -39,6 +41,8 @@ sealed class ZipOutput : ISdOutput {
 
     public void Write(string relPath, Stream content) => dir.Write(relPath, content);
 
+    public bool ExistedBefore(string relPath) => false;
+
     public void Complete() {
         if (File.Exists(zipPath)) File.Delete(zipPath);
         ZipFile.CreateFromDirectory(staging, zipPath, CompressionLevel.Optimal, false);
@@ -51,8 +55,11 @@ sealed class ZipOutput : ISdOutput {
 
 sealed class DirectoryOutput : ISdOutput {
     readonly string root;
+    readonly HashSet<string> written = new(StringComparer.OrdinalIgnoreCase);
     public int FileCount { get; private set; }
     public DirectoryOutput(string root) { this.root = root; }
+
+    public bool ExistedBefore(string relPath) => !written.Contains(relPath) && File.Exists(Path.Combine(root, relPath));
 
     /// <summary>Writes a file, always replacing whatever already has that name.</summary>
     public void Write(string relPath, Stream content) {
@@ -76,6 +83,7 @@ sealed class DirectoryOutput : ISdOutput {
         if (File.Exists(full)) File.SetAttributes(full, FileAttributes.Normal); // read-only/hidden files would block overwrite
         using var fs = new FileStream(full, FileMode.Create, FileAccess.Write, FileShare.None);
         content.CopyTo(fs);
+        written.Add(relPath);
         FileCount++;
     }
 
@@ -255,31 +263,38 @@ public class JobManager {
     }
 
     static void Apply(Prepared prep, ISdOutput output) {
+        var keep = (prep.Package.KeepExisting ?? new()).Select(k => new Regex(k, RegexOptions.IgnoreCase)).ToList();
+        // Same-name files are always replaced, except settings files the user may have edited.
+        void Put(string path, Func<Stream> open) {
+            path = Normalize(path);
+            if (keep.Any(k => k.IsMatch(path)) && output.ExistedBefore(path)) return;
+            using var s = open();
+            output.Write(path, s);
+        }
+
         foreach (var (rule, asset, local) in prep.Assets) {
             if (rule.Action == "extract") {
-                ExtractZip(local, rule.To?.FirstOrDefault() ?? "", rule.Exclude, output);
-            } else if (rule.Action == "copy") {
-                foreach (var dest in rule.To ?? new() { asset.Name }) {
-                    using var fs = File.OpenRead(local);
-                    output.Write(Normalize(dest), fs);
+                var prefix = rule.To?.FirstOrDefault() ?? "";
+                var ex = rule.Exclude is null ? null : new Regex(rule.Exclude, RegexOptions.IgnoreCase);
+                using var zip = ZipFile.OpenRead(local);
+                foreach (var entry in zip.Entries) {
+                    if (entry.FullName.EndsWith('/') || entry.FullName.EndsWith('\\')) continue; // directory
+                    var name = entry.FullName.Replace('\\', '/');
+                    if (rule.Strip != null) {
+                        if (!name.StartsWith(rule.Strip, StringComparison.OrdinalIgnoreCase)) continue;
+                        name = name.Substring(rule.Strip.Length);
+                    }
+                    if (ex != null && ex.IsMatch(name)) continue;
+                    Put(Path.Combine(prefix, name), entry.Open);
                 }
+            } else if (rule.Action == "copy") {
+                foreach (var dest in rule.To ?? new() { asset.Name }) Put(dest, () => File.OpenRead(local));
             } else {
                 throw new InvalidDataException($"Unknown action '{rule.Action}' in {prep.Package.Id}");
             }
         }
         foreach (var f in prep.Package.Files ?? new()) {
-            output.Write(Normalize(f.Path), new MemoryStream(Encoding.UTF8.GetBytes(f.Content.Replace("\r\n", "\n"))));
-        }
-    }
-
-    static void ExtractZip(string zipPath, string prefix, string? exclude, ISdOutput output) {
-        var ex = exclude is null ? null : new Regex(exclude, RegexOptions.IgnoreCase);
-        using var zip = ZipFile.OpenRead(zipPath);
-        foreach (var entry in zip.Entries) {
-            if (entry.FullName.EndsWith('/') || entry.FullName.EndsWith('\\')) continue; // directory
-            if (ex != null && ex.IsMatch(entry.FullName)) continue;
-            using var s = entry.Open();
-            output.Write(Normalize(Path.Combine(prefix, entry.FullName)), s);
+            Put(f.Path, () => new MemoryStream(Encoding.UTF8.GetBytes(f.Content.Replace("\r\n", "\n"))));
         }
     }
 

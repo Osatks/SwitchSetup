@@ -54,11 +54,15 @@ function ghHeaders(env, accept = "application/vnd.github+json") {
 async function latestRelease(repo, env, ctx) {
   const cache = caches.default;
   const key = new Request(`${CACHE_HOST}/release/${repo}`);
+  const staleKey = new Request(`${CACHE_HOST}/release-stale/${repo}`);
   const hit = await cache.match(key);
   if (hit) return hit.json();
 
   const r = await fetch(`https://api.github.com/repos/${repo}/releases/latest`, { headers: ghHeaders(env) });
   if (!r.ok) {
+    // GitHub refused (usually its hourly limit): fall back to the last known release.
+    const stale = await cache.match(staleKey);
+    if (stale) return stale.json();
     throw new Error(r.status === 403 || r.status === 429
       ? "GitHub rate limit reached, please try again in a few minutes."
       : `GitHub returned ${r.status} for ${repo}`);
@@ -71,8 +75,11 @@ async function latestRelease(repo, env, ctx) {
     publishedAt: rel.published_at,
     assets: rel.assets.map((a) => ({ name: a.name, size: a.size, download: a.browser_download_url })),
   };
-  const resp = new Response(JSON.stringify(data), { headers: { "cache-control": `public, max-age=${RELEASES_TTL}` } });
-  ctx.waitUntil(cache.put(key, resp));
+  const body = JSON.stringify(data);
+  ctx.waitUntil(Promise.all([
+    cache.put(key, new Response(body, { headers: { "cache-control": `public, max-age=${RELEASES_TTL}` } })),
+    cache.put(staleKey, new Response(body, { headers: { "cache-control": `public, max-age=${ASSET_TTL}` } })),
+  ]));
   return data;
 }
 

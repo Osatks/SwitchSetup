@@ -375,6 +375,9 @@ async function collectFiles(dir, prefix, out) {
   }
 }
 
+/** Kept on clean update: mods/sysmodules, user settings and patches. */
+const KEEP_IN_ATMOSPHERE = new Set(["contents", "config", "hosts", "exefs_patches", "kip_patches"]);
+
 /**
  * Clean update (as recommended by switch.hacks.guide): download a backup of atmosphere/
  * and bootloader/, then remove old system files. Keeps atmosphere/contents (mods),
@@ -393,9 +396,9 @@ async function cleanCard(root, log) {
   if (await dirExists(root, "atmosphere")) {
     const atmo = await getDir(root, ["atmosphere"], false);
     for await (const n of atmo.keys()) {
-      if (n.toLowerCase() !== "contents") await atmo.removeEntry(n, { recursive: true });
+      if (!KEEP_IN_ATMOSPHERE.has(n.toLowerCase())) await atmo.removeEntry(n, { recursive: true });
     }
-    log("  removed old Atmosphère files (kept atmosphere/contents)");
+    log("  removed old Atmosphère system files (kept contents, config, hosts and patches)");
   }
   if (await dirExists(root, "bootloader")) {
     const boot = await getDir(root, ["bootloader"], false);
@@ -437,9 +440,10 @@ async function fetchAsset(repo, name, size, onBytes) {
  */
 class FileSet {
   constructor() { this.map = new Map(); }
-  set(path, data) { this.map.set(path.toLowerCase(), { path, data }); }
+  /** keep = a user settings file that is only written if the card doesn't have it yet. */
+  set(path, data, keep = false) { this.map.set(path.toLowerCase(), { path, data, keep }); }
   get size() { return this.map.size; }
-  *[Symbol.iterator]() { for (const { path, data } of this.map.values()) yield [path, data]; }
+  *[Symbol.iterator]() { for (const { path, data, keep } of this.map.values()) yield [path, data, keep]; }
 }
 
 async function buildFiles(packages, log, progress) {
@@ -452,6 +456,12 @@ async function buildFiles(packages, log, progress) {
   for (let i = 0; i < packages.length; i++) {
     const p = packages[i];
     log(`[${i + 1}/${packages.length}] ${p.name}`);
+    // Same-name files are always replaced, except settings files the user may have edited.
+    const keep = (p.keepExisting ?? []).map((k) => new RegExp(k, "i"));
+    const put = (path, data) => {
+      path = normalize(path);
+      files.set(path, data, keep.some((k) => k.test(path)));
+    };
     if (p.repo && p.assets?.length) {
       const rel = state.releases[p.repo];
       if (!rel || rel.error) throw new Error(`${p.name}: ${rel?.error ?? "release information unavailable"}`);
@@ -464,12 +474,18 @@ async function buildFiles(packages, log, progress) {
         if (rule.action === "extract") {
           const prefix = rule.to?.[0] ?? "";
           const ex = rule.exclude ? new RegExp(rule.exclude, "i") : null;
+          const strip = rule.strip?.toLowerCase();
           for (const entry of readZip(data)) {
-            if (ex && ex.test(entry.name)) continue;
-            files.set(normalize(`${prefix}/${entry.name}`), await entry.read());
+            let name = entry.name.replace(/\\/g, "/");
+            if (strip) {
+              if (!name.toLowerCase().startsWith(strip)) continue;
+              name = name.slice(strip.length);
+            }
+            if (ex && ex.test(name)) continue;
+            put(`${prefix}/${name}`, await entry.read());
           }
         } else if (rule.action === "copy") {
-          for (const dest of rule.to ?? [a.name]) files.set(normalize(dest), data);
+          for (const dest of rule.to ?? [a.name]) put(dest, data);
         } else {
           throw new Error(`Unknown action '${rule.action}' in ${p.id}`);
         }
@@ -478,7 +494,7 @@ async function buildFiles(packages, log, progress) {
     } else {
       record[p.id] = "bundled";
     }
-    for (const f of p.files ?? []) files.set(normalize(f.path), enc.encode(f.content.replace(/\r\n/g, "\n")));
+    for (const f of p.files ?? []) put(f.path, enc.encode(f.content.replace(/\r\n/g, "\n")));
   }
 
   // Same record format as the Windows app, so both can read cards made by the other.
@@ -577,11 +593,13 @@ $("#build").onclick = async () => {
       }
       setPhase("Writing to SD card");
       let i = 0;
-      for (const [path, data] of files) {
+      let kept = 0;
+      for (const [path, data, keep] of files) {
+        if (keep && await exists(root, path)) { kept++; continue; } // keep the user's settings
         await writeFile(root, path, data);
         progress(0.75 + 0.25 * (++i / files.size));
       }
-      log(`Wrote ${files.size} files`);
+      log(`Wrote ${files.size - kept} files${kept ? ` (kept ${kept} existing settings file${kept > 1 ? "s" : ""})` : ""}`);
       state.card.info = await inspectCard(root);
       setPhase("Done");
       showResult({ ok: true, zip: false, backupName, count: packages.length, record });

@@ -3,19 +3,84 @@
   "support": {
     "message": "SwitchSetup is free, has no ads and doesn't track you. Donations pay for the domain and hosting, and for the time spent keeping packages working when projects change. If it saved you time, please consider supporting it.",
     "links": [
-      { "name": "Ko-fi", "description": "Buy me a coffee: one-time or monthly, no account needed", "url": "https://ko-fi.com/osatks" }
+      {
+        "name": "Ko-fi",
+        "description": "Buy me a coffee: one-time or monthly, no account needed",
+        "url": "https://ko-fi.com/osatks"
+      }
     ]
   },
   "categories": [
-    { "id": "cfw", "name": "Custom Firmware & Bootloader" },
-    { "id": "config", "name": "Configuration" },
-    { "id": "homebrew", "name": "Homebrew Apps" },
-    { "id": "payloads", "name": "Payloads" }
+    {
+      "id": "cfw",
+      "name": "Custom Firmware & Bootloader"
+    },
+    {
+      "id": "config",
+      "name": "Configuration"
+    },
+    {
+      "id": "homebrew",
+      "name": "Homebrew Apps"
+    },
+    {
+      "id": "sysmodules",
+      "name": "System Modules & Overlays"
+    },
+    {
+      "id": "payloads",
+      "name": "Payloads"
+    }
   ],
   "presets": [
-    { "id": "recommended", "name": "Recommended", "description": "Atmosphère + Hekate + safe configs + a few essential apps. Good for most people.", "packages": [ "atmosphere", "hekate", "configs", "jksv", "appstore", "ftpd" ] },
-    { "id": "minimal", "name": "Minimal", "description": "Only what is needed to boot custom firmware.", "packages": [ "atmosphere", "hekate", "configs" ] },
-    { "id": "everything", "name": "Everything", "description": "Every package in the catalog.", "packages": [ "*" ] }
+    {
+      "id": "recommended",
+      "name": "Recommended",
+      "description": "Atmosphère + Hekate + safe configs + a few essential apps. Good for most people.",
+      "packages": [
+        "atmosphere",
+        "hekate",
+        "configs",
+        "jksv",
+        "appstore",
+        "ftpd"
+      ]
+    },
+    {
+      "id": "popular",
+      "name": "Recommended + extras",
+      "description": "Recommended, plus the overlay menu, Status Monitor and controller support.",
+      "packages": [
+        "atmosphere",
+        "hekate",
+        "configs",
+        "jksv",
+        "appstore",
+        "ftpd",
+        "ultrahand",
+        "statusmonitor",
+        "missioncontrol",
+        "syscon"
+      ]
+    },
+    {
+      "id": "minimal",
+      "name": "Minimal",
+      "description": "Only what is needed to boot custom firmware.",
+      "packages": [
+        "atmosphere",
+        "hekate",
+        "configs"
+      ]
+    },
+    {
+      "id": "everything",
+      "name": "Everything",
+      "description": "Every package in the catalog.",
+      "packages": [
+        "*"
+      ]
+    }
   ],
   "packages": [
     {
@@ -27,8 +92,17 @@
       "repo": "Atmosphere-NX/Atmosphere",
       "required": true,
       "assets": [
-        { "match": "^atmosphere-.*\\.zip$", "action": "extract" },
-        { "match": "^fusee\\.bin$", "action": "copy", "to": [ "bootloader/payloads/fusee.bin" ] }
+        {
+          "match": "^atmosphere-.*\\.zip$",
+          "action": "extract"
+        },
+        {
+          "match": "^fusee\\.bin$",
+          "action": "copy",
+          "to": [
+            "bootloader/payloads/fusee.bin"
+          ]
+        }
       ]
     },
     {
@@ -40,8 +114,19 @@
       "repo": "CTCaer/hekate",
       "required": true,
       "assets": [
-        { "match": "^hekate_ctcaer_[\\d.]+_Nyx_[\\d.]+\\.zip$", "action": "extract", "exclude": "^hekate_ctcaer_.*\\.bin$" },
-        { "match": "^hekate_ctcaer_[\\d.]+\\.bin$", "action": "copy", "to": [ "bootloader/update.bin", "atmosphere/reboot_payload.bin" ] }
+        {
+          "match": "^hekate_ctcaer_[\\d.]+_Nyx_[\\d.]+\\.zip$",
+          "action": "extract",
+          "exclude": "^hekate_ctcaer_.*\\.bin$"
+        },
+        {
+          "match": "^hekate_ctcaer_[\\d.]+\\.bin$",
+          "action": "copy",
+          "to": [
+            "bootloader/update.bin",
+            "atmosphere/reboot_payload.bin"
+          ]
+        }
       ]
     },
     {
@@ -50,7 +135,10 @@
       "category": "config",
       "authors": "switch.hacks.guide",
       "description": "hekate_ipl.ini boot menu (emuMMC / sysMMC / Stock), DNS-MITM host files that block Nintendo servers, and exosphere.ini that blanks your console's serial on emuMMC. Strongly recommended to reduce ban risk.",
-      "dependencies": [ "atmosphere", "hekate" ],
+      "dependencies": [
+        "atmosphere",
+        "hekate"
+      ],
       "files": [
         {
           "path": "bootloader/hekate_ipl.ini",
@@ -77,7 +165,15 @@
       "authors": "J-D-K",
       "description": "Save data manager: back up and restore your game saves.",
       "repo": "J-D-K/JKSV",
-      "assets": [ { "match": "^JKSV\\.nro$", "action": "copy", "to": [ "switch/JKSV.nro" ] } ]
+      "assets": [
+        {
+          "match": "^JKSV\\.nro$",
+          "action": "copy",
+          "to": [
+            "switch/JKSV.nro"
+          ]
+        }
+      ]
     },
     {
       "id": "appstore",
@@ -86,7 +182,15 @@
       "authors": "fortheusers",
       "description": "Browse and install homebrew apps directly on the console.",
       "repo": "fortheusers/hb-appstore",
-      "assets": [ { "match": "^appstore\\.nro$", "action": "copy", "to": [ "switch/appstore/appstore.nro" ] } ]
+      "assets": [
+        {
+          "match": "^appstore\\.nro$",
+          "action": "copy",
+          "to": [
+            "switch/appstore/appstore.nro"
+          ]
+        }
+      ]
     },
     {
       "id": "ftpd",
@@ -95,7 +199,15 @@
       "authors": "mtheall",
       "description": "FTP server: transfer files to the SD card over Wi-Fi without removing it.",
       "repo": "mtheall/ftpd",
-      "assets": [ { "match": "^ftpd\\.nro$", "action": "copy", "to": [ "switch/ftpd.nro" ] } ]
+      "assets": [
+        {
+          "match": "^ftpd\\.nro$",
+          "action": "copy",
+          "to": [
+            "switch/ftpd.nro"
+          ]
+        }
+      ]
     },
     {
       "id": "checkpoint",
@@ -104,7 +216,15 @@
       "authors": "BernardoGiordano",
       "description": "Alternative save data manager.",
       "repo": "BernardoGiordano/Checkpoint",
-      "assets": [ { "match": "^Checkpoint\\.nro$", "action": "copy", "to": [ "switch/Checkpoint/Checkpoint.nro" ] } ]
+      "assets": [
+        {
+          "match": "^Checkpoint\\.nro$",
+          "action": "copy",
+          "to": [
+            "switch/Checkpoint/Checkpoint.nro"
+          ]
+        }
+      ]
     },
     {
       "id": "nxshell",
@@ -113,7 +233,15 @@
       "authors": "joel16",
       "description": "File manager for the SD card.",
       "repo": "joel16/NX-Shell",
-      "assets": [ { "match": "^NX-Shell\\.nro$", "action": "copy", "to": [ "switch/NX-Shell/NX-Shell.nro" ] } ]
+      "assets": [
+        {
+          "match": "^NX-Shell\\.nro$",
+          "action": "copy",
+          "to": [
+            "switch/NX-Shell/NX-Shell.nro"
+          ]
+        }
+      ]
     },
     {
       "id": "goldleaf",
@@ -122,7 +250,15 @@
       "authors": "XorTroll",
       "description": "Multipurpose tool: file browser, ticket and title management, USB transfers with Quark.",
       "repo": "XorTroll/Goldleaf",
-      "assets": [ { "match": "^Goldleaf\\.nro$", "action": "copy", "to": [ "switch/Goldleaf/Goldleaf.nro" ] } ]
+      "assets": [
+        {
+          "match": "^Goldleaf\\.nro$",
+          "action": "copy",
+          "to": [
+            "switch/Goldleaf/Goldleaf.nro"
+          ]
+        }
+      ]
     },
     {
       "id": "nxthemes",
@@ -131,7 +267,15 @@
       "authors": "exelix11",
       "description": "Install custom home menu themes.",
       "repo": "exelix11/SwitchThemeInjector",
-      "assets": [ { "match": "^NXThemesInstaller\\.nro$", "action": "copy", "to": [ "switch/NXThemesInstaller.nro" ] } ]
+      "assets": [
+        {
+          "match": "^NXThemesInstaller\\.nro$",
+          "action": "copy",
+          "to": [
+            "switch/NXThemesInstaller.nro"
+          ]
+        }
+      ]
     },
     {
       "id": "tegraexplorer",
@@ -140,7 +284,165 @@
       "authors": "suchmememanyskill",
       "description": "Payload-based file explorer and NAND tool. Launch it from Hekate → Payloads.",
       "repo": "suchmememanyskill/TegraExplorer",
-      "assets": [ { "match": "^TegraExplorer\\.bin$", "action": "copy", "to": [ "bootloader/payloads/TegraExplorer.bin" ] } ]
+      "assets": [
+        {
+          "match": "^TegraExplorer\\.bin$",
+          "action": "copy",
+          "to": [
+            "bootloader/payloads/TegraExplorer.bin"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ultrahand",
+      "name": "Ultrahand Overlay",
+      "category": "sysmodules",
+      "authors": "ppkantorski",
+      "description": "Overlay menu that opens on top of any game (the modern replacement for Tesla Menu). Includes nx-ovlloader. Needed for overlays like Status Monitor, QuickNTP and emuiibo.",
+      "repo": "ppkantorski/Ultrahand-Overlay",
+      "assets": [
+        {
+          "match": "^sdout\\.zip$",
+          "action": "extract"
+        }
+      ]
+    },
+    {
+      "id": "missioncontrol",
+      "name": "MissionControl",
+      "category": "sysmodules",
+      "authors": "ndeadly",
+      "description": "Use Bluetooth controllers from other consoles (PS3/PS4/PS5, Xbox, Wii U and more) natively on your Switch.",
+      "repo": "ndeadly/MissionControl",
+      "assets": [
+        {
+          "match": "^MissionControl-.*-master.*\\.zip$",
+          "action": "extract"
+        }
+      ]
+    },
+    {
+      "id": "syscon",
+      "name": "sys-con",
+      "category": "sysmodules",
+      "authors": "cathery & o0Zz",
+      "description": "Use third-party USB controllers (Xbox, PlayStation and generic USB gamepads) with your Switch.",
+      "repo": "o0Zz/sys-con",
+      "assets": [
+        {
+          "match": "^sys-con-[\\d.]+\\.zip$",
+          "action": "extract"
+        }
+      ],
+      "keepExisting": [
+        "^config/sys-con/"
+      ]
+    },
+    {
+      "id": "ldnmitm",
+      "name": "ldn_mitm",
+      "category": "sysmodules",
+      "authors": "spacemeowx2",
+      "description": "Play local wireless multiplayer over the internet (LAN play). Includes a config app and overlay.",
+      "repo": "spacemeowx2/ldn_mitm",
+      "assets": [
+        {
+          "match": "^ldn_mitm_v.*\\.zip$",
+          "action": "extract"
+        }
+      ]
+    },
+    {
+      "id": "emuiibo",
+      "name": "emuiibo",
+      "category": "sysmodules",
+      "authors": "XorTroll",
+      "description": "Virtual amiibo: use amiibo from files on your SD card. Controlled from its overlay.",
+      "repo": "XorTroll/emuiibo",
+      "dependencies": [
+        "ultrahand"
+      ],
+      "assets": [
+        {
+          "match": "^emuiibo\\.zip$",
+          "action": "extract",
+          "strip": "SdOut/"
+        }
+      ]
+    },
+    {
+      "id": "sysclk",
+      "name": "sys-clk",
+      "category": "sysmodules",
+      "authors": "retronx-team",
+      "description": "Change CPU, GPU and memory clocks per game. Includes a manager app and overlay.",
+      "warning": "Raising clocks increases heat and battery use. Change settings carefully.",
+      "repo": "retronx-team/sys-clk",
+      "assets": [
+        {
+          "match": "^sys-clk-.*\\.zip$",
+          "action": "extract",
+          "exclude": "^README"
+        }
+      ],
+      "keepExisting": [
+        "^config/sys-clk/config\\.ini$"
+      ]
+    },
+    {
+      "id": "statusmonitor",
+      "name": "Status Monitor",
+      "category": "sysmodules",
+      "authors": "masagrator",
+      "description": "Overlay showing FPS, CPU/GPU load, temperatures and battery while you play.",
+      "repo": "masagrator/Status-Monitor-Overlay",
+      "dependencies": [
+        "ultrahand"
+      ],
+      "assets": [
+        {
+          "match": "^Status-Monitor-Overlay\\.zip$",
+          "action": "extract"
+        }
+      ]
+    },
+    {
+      "id": "fizeau",
+      "name": "Fizeau",
+      "category": "sysmodules",
+      "authors": "averne",
+      "description": "Adjust screen colors, saturation, gamma and a night-time blue light filter.",
+      "repo": "averne/Fizeau",
+      "assets": [
+        {
+          "match": "^Fizeau-.*\\.zip$",
+          "action": "extract"
+        }
+      ],
+      "keepExisting": [
+        "^config/Fizeau/"
+      ]
+    },
+    {
+      "id": "quickntp",
+      "name": "QuickNTP",
+      "category": "sysmodules",
+      "authors": "nedex",
+      "description": "Sync the console clock from the internet in one tap, from an overlay.",
+      "repo": "nedex/QuickNTP",
+      "dependencies": [
+        "ultrahand"
+      ],
+      "assets": [
+        {
+          "match": "^sdout\\.zip$",
+          "action": "extract"
+        }
+      ],
+      "keepExisting": [
+        "^config/quickntp\\.ini$"
+      ]
     }
   ]
 }

@@ -6,7 +6,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <AssemblyName>SwitchSetup</AssemblyName>
     <RootNamespace>SwitchSetup</RootNamespace>
-    <Version>2.2.0</Version>
+    <Version>2.3.0</Version>
     <InvariantGlobalization>true</InvariantGlobalization>
     <ApplicationIcon>icon.ico</ApplicationIcon>
     <Product>SwitchSetup</Product>

@@ -30,15 +30,21 @@ public record PackageDef(
     string? Warning = null,
     List<string>? Dependencies = null,
     List<AssetRule>? Assets = null,
-    List<GeneratedFile>? Files = null);
+    List<GeneratedFile>? Files = null,
+    List<string>? KeepExisting = null);
 
 /// <summary>How to install one GitHub release asset.</summary>
 /// <param name="Match">Regex matched against the asset file name.</param>
 /// <param name="Action">"extract" a zip into the SD root (or <see cref="To"/>[0]), or "copy" the file to each path in <see cref="To"/>.</param>
 /// <param name="Exclude">Regex of zip entry paths to skip when extracting.</param>
-public record AssetRule(string Match, string Action, List<string>? To = null, string? Exclude = null);
+/// <param name="Strip">Folder inside the zip that holds the SD card files (e.g. "SdOut/"); entries outside it are skipped.</param>
+public record AssetRule(string Match, string Action, List<string>? To = null, string? Exclude = null, string? Strip = null);
 
 public record GeneratedFile(string Path, string Content);
+
+// PackageDef.KeepExisting: regexes of paths (usually user-edited settings files such as
+// config/sys-con/config.ini) that are only written when the card doesn't have them yet.
+// Everything else is always overwritten with the new version.
 
 public record PackageVersion(string Id, string? Version, DateTimeOffset? PublishedAt, string? Url, long Size, string? Error);
 

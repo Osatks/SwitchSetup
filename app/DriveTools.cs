@@ -73,12 +73,17 @@ public static class DriveTools {
         return !Directory.Exists(root);
     }
 
+    static readonly HashSet<string> KeepInAtmosphere = new(StringComparer.OrdinalIgnoreCase) {
+        "contents", "config", "hosts", "exefs_patches", "kip_patches"
+    };
+
     public static string BackupDir => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "SwitchSetup Backups");
 
     /// <summary>
     /// Clean update, as recommended by switch.hacks.guide: back up atmosphere/ and bootloader/
     /// to the PC, then remove old Atmosphère/Hekate system files so stale files can't break boot.
-    /// Kept on the card: atmosphere/contents (mods and sysmodules), bootloader/ini and bootloader/payloads.
+    /// Kept on the card: atmosphere/contents (mods and sysmodules), atmosphere/config, hosts,
+    /// exefs_patches and kip_patches (user settings and patches), bootloader/ini and bootloader/payloads.
     /// emuMMC, Nintendo, saves and everything else is never touched.
     /// </summary>
     public static string? CleanForUpdate(string root, Action<string> log) {
@@ -102,10 +107,10 @@ public static class DriveTools {
 
         if (Directory.Exists(atmo)) {
             foreach (var entry in Directory.EnumerateFileSystemEntries(atmo)) {
-                if (Path.GetFileName(entry).Equals("contents", StringComparison.OrdinalIgnoreCase)) continue;
+                if (KeepInAtmosphere.Contains(Path.GetFileName(entry))) continue;
                 DeleteEntry(entry);
             }
-            log("  removed old Atmosphère files (kept atmosphere/contents)");
+            log("  removed old Atmosphère system files (kept contents, config, hosts and patches)");
         }
         foreach (var sub in new[] { "sys", "res" }) {
             var p = Path.Combine(boot, sub);

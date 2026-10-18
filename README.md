@@ -23,7 +23,9 @@ Not affiliated with, endorsed by or sponsored by Nintendo. SwitchSetup does not 
 - **Download first, write second.** Nothing touches the card until every file has downloaded, so a dropped connection can't leave it half-written.
 - **Safety checks.** Only removable drives are listed, so it can never write to C:. It warns about exFAT and blocks NTFS cards.
 - **Eject button** when it's done.
-- Presets (Recommended / Minimal / Everything), search, category filters, and download sizes.
+- 20 packages, including overlays (Ultrahand, Status Monitor), controller support (MissionControl, sys-con), ldn_mitm, emuiibo, sys-clk, Fizeau and QuickNTP
+- Presets (Recommended / Recommended + extras / Minimal / Everything), search, category filters, and download sizes
+- Settings files you may have edited (sys-con, Fizeau, QuickNTP) are kept on updates; everything else is replaced with the new version
 - Recommended configs from switch.hacks.guide: `hekate_ipl.ini`, DNS-MITM host files that block Nintendo servers, and `exosphere.ini`.
 - Save or load your selection as a file. Light and dark themes follow Windows.
 
