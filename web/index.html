@@ -24,6 +24,7 @@
     <div class="container nav-inner">
       <a class="brand" href="/"><img src="/img/logo.svg" alt="" width="28" height="28"> SwitchSetup</a>
       <nav class="links" aria-label="Main">
+        <a href="/build/">Build online</a>
         <a href="#features">Features</a>
         <a href="#how">How it works</a>
         <a href="#faq">FAQ</a>
@@ -40,13 +41,17 @@
         <h1>Your Switch SD card,<br><span class="grad">ready in minutes.</span></h1>
         <p class="lead">Pick your homebrew. SwitchSetup downloads the latest official releases of Atmosphère, Hekate and your favourite apps, and writes every file to your SD card exactly where it belongs.</p>
         <div class="cta">
-          <a class="btn btn-primary" data-download href="#">
-            <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M5 20h14v-2H5v2zM19 9h-4V3H9v6H5l7 7 7-7z"/></svg>
-            Download for Windows
+          <a class="btn btn-primary" href="/build/">
+            <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M18 2h-8L4 8v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2zm-6 6h-2V4h2v4zm3 0h-2V4h2v4zm3 0h-2V4h2v4z"/></svg>
+            Build your SD card online
           </a>
-          <a class="btn btn-ghost" data-repo-link href="#">View source on GitHub</a>
+          <a class="btn btn-ghost" data-download href="#">
+            <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M5 20h14v-2H5v2zM19 9h-4V3H9v6H5l7 7 7-7z"/></svg>
+            Windows app
+          </a>
         </div>
-        <p class="fine" id="relInfo">Windows 10 and 11 · nothing to install, just run it</p>
+        <p class="fine">Nothing to install: works in any browser on Windows, Mac and Linux.</p>
+        <p class="fine" id="relInfo"></p>
 
         <figure class="shot">
           <img src="/img/screenshot.webp" width="1400" height="1000" alt="SwitchSetup showing package presets, the package list and an inserted SD card ready to update">
@@ -66,8 +71,8 @@
           </article>
           <article>
             <div class="ico">💾</div>
-            <h3>Writes straight to your card</h3>
-            <p>Plug in your SD card and it's detected automatically. Prefer a ZIP? That works too.</p>
+            <h3>Right in your browser</h3>
+            <p>Build online and get a ready ZIP, or write straight to your SD card in Chrome and Edge. Nothing to install.</p>
           </article>
           <article>
             <div class="ico">🔄</div>
@@ -100,17 +105,17 @@
           <li>
             <span class="n">1</span>
             <h3>Pick your packages</h3>
-            <p>Start from the Recommended preset or choose exactly what you want.</p>
+            <p>Open the <a href="/build/">online builder</a> and start from the Recommended preset, or choose exactly what you want.</p>
           </li>
           <li>
             <span class="n">2</span>
-            <h3>Insert your SD card</h3>
-            <p>It shows up automatically, with its format, free space and what's already on it.</p>
+            <h3>Choose ZIP or SD card</h3>
+            <p>Download a ready ZIP, or select your SD card and SwitchSetup writes the files for you.</p>
           </li>
           <li>
             <span class="n">3</span>
             <h3>Click Build</h3>
-            <p>Watch the progress, then eject the card and put it in your Switch.</p>
+            <p>Files with the same name are replaced with the new versions automatically. Eject the card and put it in your Switch.</p>
           </li>
         </ol>
       </div>
@@ -144,7 +149,15 @@
           <p>Yes, completely: no ads, no accounts, no tracking. If it saves you time, you can <a href="https://ko-fi.com/osatks" target="_blank" rel="noopener">support it on Ko-fi</a>.</p>
         </details>
         <details>
-          <summary>Windows says "Windows protected your PC". Is it safe?</summary>
+          <summary>Do I need to install anything?</summary>
+          <p>No. The <a href="/build/">online builder</a> works in any modern browser. The Windows app is optional: it adds automatic SD card detection, an eject button and backups on your PC.</p>
+        </details>
+        <details>
+          <summary>What happens to files that already exist on my card?</summary>
+          <p>Files with the same name are replaced with the new versions, with no errors or prompts when writing directly to the card. When extracting a ZIP yourself, choose <b>Replace the files in the destination</b>. Your games, saves and other files are left alone.</p>
+        </details>
+        <details>
+          <summary>Windows says "Windows protected your PC" for the app. Is it safe?</summary>
           <p>That message appears for new apps that aren't code-signed yet. Click <b>More info → Run anyway</b>. The app is open source, and it's built automatically from the code on GitHub, so you can check exactly what it does.</p>
         </details>
         <details>
@@ -165,7 +178,7 @@
         </details>
         <details>
           <summary>Mac or Linux?</summary>
-          <p>Windows only for now. A version that runs in the browser is planned.</p>
+          <p>Yes: use the <a href="/build/">online builder</a>. It works on every system. Writing straight to the SD card needs Chrome, Edge or Opera; in other browsers, download the ZIP.</p>
         </details>
       </div>
     </section>

@@ -19,6 +19,6 @@ fetch(`https://api.github.com/repos/${REPO}/releases/latest`)
     const exe = rel.assets?.find((a) => a.name === "SwitchSetup.exe");
     const mb = exe ? ` · ${Math.round(exe.size / 1024 / 1024)} MB` : "";
     const date = new Date(rel.published_at).toLocaleDateString(undefined, { year: "numeric", month: "short", day: "numeric" });
-    document.getElementById("relInfo").textContent = `Version ${rel.tag_name.replace(/^v/, "")} · ${date}${mb} · Windows 10 and 11`;
+    document.getElementById("relInfo").textContent = `Windows app ${rel.tag_name.replace(/^v/, "")} · ${date}${mb}`;
   })
   .catch(() => { });

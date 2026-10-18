@@ -1,17 +1,22 @@
-// Cloudflare Workers config for the switchsetup.app website (static files in ./web).
+// Cloudflare Workers config for the switchsetup.app website.
+// Static files come from ./web; src/worker.js only handles /api/* (the online builder).
 // Cloudflare rebuilds and deploys automatically on every push to main.
 {
   "$schema": "https://unpkg.com/wrangler@4/config-schema.json",
   "name": "switchsetup",
-  "compatibility_date": "2026-10-13",
+  "main": "src/worker.js",
+  "compatibility_date": "2026-05-01",
   "assets": {
     "directory": "./web",
+    "binding": "ASSETS",
     "not_found_handling": "404-page",
-    "html_handling": "auto-trailing-slash"
+    "html_handling": "auto-trailing-slash",
+    "run_worker_first": ["/api/*"]
   },
   "routes": [
     { "pattern": "switchsetup.app", "custom_domain": true },
     { "pattern": "www.switchsetup.app", "custom_domain": true }
   ],
-  "workers_dev": true
+  "workers_dev": true,
+  "observability": { "enabled": true }
 }

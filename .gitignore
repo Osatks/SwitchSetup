@@ -7,3 +7,6 @@ publish/
 .vscode/
 .DS_Store
 Thumbs.db
+.wrangler/
+node_modules/
+.dev.vars

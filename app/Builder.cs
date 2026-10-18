@@ -54,13 +54,27 @@ sealed class DirectoryOutput : ISdOutput {
     public int FileCount { get; private set; }
     public DirectoryOutput(string root) { this.root = root; }
 
+    /// <summary>Writes a file, always replacing whatever already has that name.</summary>
     public void Write(string relPath, Stream content) {
+        var rootFull = Path.GetFullPath(root);
         var full = Path.GetFullPath(Path.Combine(root, relPath));
-        if (!full.StartsWith(Path.GetFullPath(root), StringComparison.OrdinalIgnoreCase))
+        if (!full.StartsWith(rootFull, StringComparison.OrdinalIgnoreCase))
             throw new InvalidDataException($"Refusing to write outside the SD card: {relPath}");
-        Directory.CreateDirectory(Path.GetDirectoryName(full)!);
-        if (File.Exists(full)) File.SetAttributes(full, FileAttributes.Normal); // read-only files would block overwrite
-        using var fs = File.Create(full);
+
+        // A *file* sitting where a folder needs to go (e.g. a stray file called "switch"): replace it.
+        var dir = Path.GetDirectoryName(full)!;
+        for (var d = dir; d.Length > rootFull.Length; d = Path.GetDirectoryName(d)!) {
+            if (File.Exists(d)) {
+                File.SetAttributes(d, FileAttributes.Normal);
+                File.Delete(d);
+            }
+        }
+        Directory.CreateDirectory(dir);
+
+        if (Directory.Exists(full))
+            throw new IOException($"There is a folder named \"{relPath}\" on the card where a file needs to go. Rename or delete that folder and try again.");
+        if (File.Exists(full)) File.SetAttributes(full, FileAttributes.Normal); // read-only/hidden files would block overwrite
+        using var fs = new FileStream(full, FileMode.Create, FileAccess.Write, FileShare.None);
         content.CopyTo(fs);
         FileCount++;
     }

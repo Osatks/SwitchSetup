@@ -1,6 +1,6 @@
 # SwitchSetup
 
-**Website: [switchsetup.app](https://switchsetup.app)** · [Download for Windows](https://github.com/Osatks/SwitchSetup/releases/latest/download/SwitchSetup.exe)
+**[Build your SD card online](https://switchsetup.app/build/)** (no install) · [Windows app](https://github.com/Osatks/SwitchSetup/releases/latest/download/SwitchSetup.exe)
 
 ![SwitchSetup](web/img/screenshot.webp)
 
@@ -27,7 +27,11 @@ Not affiliated with, endorsed by or sponsored by Nintendo. SwitchSetup does not 
 - Recommended configs from switch.hacks.guide: `hekate_ipl.ini`, DNS-MITM host files that block Nintendo servers, and `exosphere.ini`.
 - Save or load your selection as a file. Light and dark themes follow Windows.
 
-## Use it
+## Use it online
+
+Open **https://switchsetup.app/build/**, pick your packages and click **Build ZIP**. In Chrome, Edge or Opera on a computer you can also choose **SD card** to write the files straight to the card. Files with the same name are always replaced with the new versions.
+
+## Use the Windows app
 
 1. Run `SwitchSetup.exe`. Your browser opens at `http://127.0.0.1:5175`.
 2. Insert your SD card, or switch to **ZIP file**.
@@ -70,7 +74,8 @@ For development, set `SWITCHSETUP_TEST_CARD=C:\some\folder` to show that folder 
 | Folder | What it is |
 |---|---|
 | `app/` | The Windows app (.NET 8). The UI is in `app/wwwroot`, the package list in `app/catalog.json` |
-| `web/` | The switchsetup.app website, static files served by Cloudflare Workers (config in `wrangler.jsonc`) |
+| `web/` | The switchsetup.app website and the online builder (`web/build/`), served by Cloudflare Workers |
+| `src/worker.js` | Small Worker API that relays release files from GitHub to the online builder (only repos in the catalog) |
 | `.github/workflows/` | `build.yml` checks every push. `release.yml` builds `SwitchSetup.exe` when you push a `v*` tag |
 
 ## Releasing a new version
