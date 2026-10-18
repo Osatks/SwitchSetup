@@ -33,7 +33,8 @@ function fmtDate(d) {
   return d ? new Date(d).toLocaleDateString(undefined, { year: "numeric", month: "short", day: "numeric" }) : "";
 }
 async function api(path) {
-  const r = await fetch(path);
+  // "no-cache" = always check with the server, so a newly added package never meets a stale version list.
+  const r = await fetch(path, { cache: "no-cache" });
   const body = r.headers.get("content-type")?.includes("json") ? await r.json() : await r.text();
   if (!r.ok) throw new Error(body?.error || r.statusText);
   return body;
@@ -588,6 +589,11 @@ $("#build").onclick = async () => {
 
   try {
     const packages = resolveSelected();
+    // A package without version info (e.g. the list was loaded before it was added): fetch the versions again.
+    if (packages.some((p) => p.repo && (!state.releases[p.repo] || state.releases[p.repo].error))) {
+      log("Refreshing package versions");
+      for (const r of await api("/api/releases")) state.releases[r.repo] = r;
+    }
     setPhase("Downloading");
     log(`Downloading ${packages.length} packages`);
     const { files, record } = await buildFiles(packages, log, progress);
