@@ -1,0 +1,146 @@
+{
+  "version": 1,
+  "support": {
+    "message": "SwitchSetup is free, has no ads and doesn't track you. Donations pay for the domain and hosting, and for the time spent keeping packages working when projects change. If it saved you time, please consider supporting it.",
+    "links": [
+      { "name": "Ko-fi", "description": "Buy me a coffee: one-time or monthly, no account needed", "url": "https://ko-fi.com/osatks" }
+    ]
+  },
+  "categories": [
+    { "id": "cfw", "name": "Custom Firmware & Bootloader" },
+    { "id": "config", "name": "Configuration" },
+    { "id": "homebrew", "name": "Homebrew Apps" },
+    { "id": "payloads", "name": "Payloads" }
+  ],
+  "presets": [
+    { "id": "recommended", "name": "Recommended", "description": "Atmosphère + Hekate + safe configs + a few essential apps. Good for most people.", "packages": [ "atmosphere", "hekate", "configs", "jksv", "appstore", "ftpd" ] },
+    { "id": "minimal", "name": "Minimal", "description": "Only what is needed to boot custom firmware.", "packages": [ "atmosphere", "hekate", "configs" ] },
+    { "id": "everything", "name": "Everything", "description": "Every package in the catalog.", "packages": [ "*" ] }
+  ],
+  "packages": [
+    {
+      "id": "atmosphere",
+      "name": "Atmosphère",
+      "category": "cfw",
+      "authors": "SciresM & Atmosphère-NX",
+      "description": "The custom firmware itself. Includes the Homebrew Menu (hbmenu) and Homebrew Loader.",
+      "repo": "Atmosphere-NX/Atmosphere",
+      "required": true,
+      "assets": [
+        { "match": "^atmosphere-.*\\.zip$", "action": "extract" },
+        { "match": "^fusee\\.bin$", "action": "copy", "to": [ "bootloader/payloads/fusee.bin" ] }
+      ]
+    },
+    {
+      "id": "hekate",
+      "name": "Hekate & Nyx",
+      "category": "cfw",
+      "authors": "CTCaer",
+      "description": "Bootloader used to launch Atmosphère, create emuMMC, make NAND backups and more. Its payload is placed at bootloader/update.bin and atmosphere/reboot_payload.bin.",
+      "repo": "CTCaer/hekate",
+      "required": true,
+      "assets": [
+        { "match": "^hekate_ctcaer_[\\d.]+_Nyx_[\\d.]+\\.zip$", "action": "extract", "exclude": "^hekate_ctcaer_.*\\.bin$" },
+        { "match": "^hekate_ctcaer_[\\d.]+\\.bin$", "action": "copy", "to": [ "bootloader/update.bin", "atmosphere/reboot_payload.bin" ] }
+      ]
+    },
+    {
+      "id": "configs",
+      "name": "Recommended configs",
+      "category": "config",
+      "authors": "switch.hacks.guide",
+      "description": "hekate_ipl.ini boot menu (emuMMC / sysMMC / Stock), DNS-MITM host files that block Nintendo servers, and exosphere.ini that blanks your console's serial on emuMMC. Strongly recommended to reduce ban risk.",
+      "dependencies": [ "atmosphere", "hekate" ],
+      "files": [
+        {
+          "path": "bootloader/hekate_ipl.ini",
+          "content": "[config]\nautoboot=0\nautoboot_list=0\nbootwait=3\nbacklight=100\nnoticker=0\nautohosoff=1\nautonogc=1\nupdater2p=1\nbootprotect=0\n\n[CFW (emuMMC)]\nemummcforce=1\nfss0=atmosphere/package3\nicon=bootloader/res/icon_payload.bmp\n\n[CFW (sysMMC)]\nemummc_force_disable=1\nfss0=atmosphere/package3\nicon=bootloader/res/icon_payload.bmp\n\n[Stock (sysMMC)]\nemummc_force_disable=1\nfss0=atmosphere/package3\nstock=1\nicon=bootloader/res/icon_switch.bmp\n"
+        },
+        {
+          "path": "atmosphere/hosts/emummc.txt",
+          "content": "# Block Nintendo Servers\n127.0.0.1 *nintendo.*\n127.0.0.1 *nintendo-europe.com\n127.0.0.1 *nintendoswitch.*\n95.216.149.205 *conntest.nintendowifi.net\n95.216.149.205 *ctest.cdn.nintendo.net\n"
+        },
+        {
+          "path": "atmosphere/hosts/sysmmc.txt",
+          "content": "# Block Nintendo Servers\n127.0.0.1 *nintendo.*\n127.0.0.1 *nintendo-europe.com\n127.0.0.1 *nintendoswitch.*\n95.216.149.205 *conntest.nintendowifi.net\n95.216.149.205 *ctest.cdn.nintendo.net\n"
+        },
+        {
+          "path": "exosphere.ini",
+          "content": "[exosphere]\ndebugmode=1\ndebugmode_user=0\ndisable_user_exception_handlers=0\nenable_user_pmu_access=0\nblank_prodinfo_sysmmc=0\nblank_prodinfo_emummc=1\nallow_writing_to_cal_sysmmc=0\nlog_port=0\nlog_baud_rate=115200\nlog_inverted=0\n"
+        }
+      ]
+    },
+    {
+      "id": "jksv",
+      "name": "JKSV",
+      "category": "homebrew",
+      "authors": "J-D-K",
+      "description": "Save data manager: back up and restore your game saves.",
+      "repo": "J-D-K/JKSV",
+      "assets": [ { "match": "^JKSV\\.nro$", "action": "copy", "to": [ "switch/JKSV.nro" ] } ]
+    },
+    {
+      "id": "appstore",
+      "name": "Homebrew App Store",
+      "category": "homebrew",
+      "authors": "fortheusers",
+      "description": "Browse and install homebrew apps directly on the console.",
+      "repo": "fortheusers/hb-appstore",
+      "assets": [ { "match": "^appstore\\.nro$", "action": "copy", "to": [ "switch/appstore/appstore.nro" ] } ]
+    },
+    {
+      "id": "ftpd",
+      "name": "ftpd",
+      "category": "homebrew",
+      "authors": "mtheall",
+      "description": "FTP server: transfer files to the SD card over Wi-Fi without removing it.",
+      "repo": "mtheall/ftpd",
+      "assets": [ { "match": "^ftpd\\.nro$", "action": "copy", "to": [ "switch/ftpd.nro" ] } ]
+    },
+    {
+      "id": "checkpoint",
+      "name": "Checkpoint",
+      "category": "homebrew",
+      "authors": "BernardoGiordano",
+      "description": "Alternative save data manager.",
+      "repo": "BernardoGiordano/Checkpoint",
+      "assets": [ { "match": "^Checkpoint\\.nro$", "action": "copy", "to": [ "switch/Checkpoint/Checkpoint.nro" ] } ]
+    },
+    {
+      "id": "nxshell",
+      "name": "NX-Shell",
+      "category": "homebrew",
+      "authors": "joel16",
+      "description": "File manager for the SD card.",
+      "repo": "joel16/NX-Shell",
+      "assets": [ { "match": "^NX-Shell\\.nro$", "action": "copy", "to": [ "switch/NX-Shell/NX-Shell.nro" ] } ]
+    },
+    {
+      "id": "goldleaf",
+      "name": "Goldleaf",
+      "category": "homebrew",
+      "authors": "XorTroll",
+      "description": "Multipurpose tool: file browser, ticket and title management, USB transfers with Quark.",
+      "repo": "XorTroll/Goldleaf",
+      "assets": [ { "match": "^Goldleaf\\.nro$", "action": "copy", "to": [ "switch/Goldleaf/Goldleaf.nro" ] } ]
+    },
+    {
+      "id": "nxthemes",
+      "name": "NXThemes Installer",
+      "category": "homebrew",
+      "authors": "exelix11",
+      "description": "Install custom home menu themes.",
+      "repo": "exelix11/SwitchThemeInjector",
+      "assets": [ { "match": "^NXThemesInstaller\\.nro$", "action": "copy", "to": [ "switch/NXThemesInstaller.nro" ] } ]
+    },
+    {
+      "id": "tegraexplorer",
+      "name": "TegraExplorer",
+      "category": "payloads",
+      "authors": "suchmememanyskill",
+      "description": "Payload-based file explorer and NAND tool. Launch it from Hekate → Payloads.",
+      "repo": "suchmememanyskill/TegraExplorer",
+      "assets": [ { "match": "^TegraExplorer\\.bin$", "action": "copy", "to": [ "bootloader/payloads/TegraExplorer.bin" ] } ]
+    }
+  ]
+}

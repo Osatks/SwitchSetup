@@ -1,0 +1,9 @@
+bin/
+obj/
+out/
+publish/
+*.user
+.vs/
+.vscode/
+.DS_Store
+Thumbs.db

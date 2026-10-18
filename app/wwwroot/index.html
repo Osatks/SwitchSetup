@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SwitchSetup</title>
+  <link rel="icon" href="logo.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="app.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="container topbar-inner">
+      <a class="brand" href="/">
+        <img src="logo.svg" alt="" width="30" height="30">
+        <span>SwitchSetup</span>
+        <span class="badge" id="appver"></span>
+      </a>
+      <nav class="topnav">
+        <a href="https://switch.hacks.guide" target="_blank" rel="noopener">Guide</a>
+        <button class="navbtn" id="openCredits">Credits</button>
+        <button class="navbtn support-btn" data-support>
+          <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path fill="currentColor" d="M12 21.35 10.55 20C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09A6 6 0 0 1 16.5 3C19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+          Support
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="container">
+      <h1>Your Switch SD card, ready in minutes.</h1>
+      <p>Choose your homebrew, and SwitchSetup grabs the latest official releases and puts every file exactly where it belongs.</p>
+      <ol class="howto">
+        <li><span>1</span>Pick packages</li>
+        <li><span>2</span>Choose your SD card or a ZIP</li>
+        <li><span>3</span>Build</li>
+      </ol>
+    </div>
+  </section>
+
+  <main class="container layout">
+    <section class="main-col">
+      <div class="panel">
+        <div class="panel-head">
+          <h2>Start with a preset</h2>
+        </div>
+        <div id="presets" class="presets" role="radiogroup"></div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-head">
+          <h2>Packages</h2>
+          <button class="textbtn" id="refresh" title="Ask GitHub for the newest versions">
+            <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path fill="currentColor" d="M17.65 6.35A7.95 7.95 0 0 0 12 4a8 8 0 1 0 7.73 10h-2.08A6 6 0 1 1 12 6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/></svg>
+            Check for updates
+          </button>
+        </div>
+        <div class="toolbar">
+          <div class="search">
+            <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M15.5 14h-.79l-.28-.27A6.47 6.47 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+            <input id="search" type="search" placeholder="Search packages" autocomplete="off">
+          </div>
+          <div id="chips" class="chips"></div>
+        </div>
+        <div id="packages"></div>
+        <div class="io-row">
+          <button class="btn btn-quiet" id="export">Save selection</button>
+          <label class="btn btn-quiet">Load selection<input type="file" id="import" accept=".json" hidden></label>
+        </div>
+      </div>
+    </section>
+
+    <aside class="side-col">
+      <div class="panel sticky">
+        <h2>Your build</h2>
+
+        <div class="segmented" role="radiogroup" aria-label="Output">
+          <label><input type="radio" name="target" value="drive" checked><span>SD card</span></label>
+          <label><input type="radio" name="target" value="zip"><span>ZIP file</span></label>
+        </div>
+
+        <div id="drivePane">
+          <div id="cardStatus" class="card-status"></div>
+          <label class="check" id="cleanRow" hidden>
+            <input type="checkbox" id="clean" checked>
+            <span>
+              <strong>Clean update</strong>
+              <small>Backs up and removes old Atmosphère &amp; Hekate system files first. Keeps your mods, emuMMC and saves. Recommended.</small>
+            </span>
+          </label>
+        </div>
+        <p id="zipPane" class="muted small" hidden>You'll get a ZIP. Extract everything inside it to the root of your SD card.</p>
+
+        <dl class="totals">
+          <div><dt>Packages</dt><dd id="totCount">0</dd></div>
+          <div><dt>Download</dt><dd id="totSize">–</dd></div>
+          <div id="totUpdRow" hidden><dt>Updates</dt><dd id="totUpd">0</dd></div>
+        </dl>
+
+        <button class="btn btn-primary btn-block" id="build">Build</button>
+        <p id="buildHint" class="muted small center"></p>
+      </div>
+    </aside>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <p>
+        SwitchSetup is based on <a href="https://github.com/noahc3/SDSetup" target="_blank" rel="noopener">Homebrew SD Setup</a>
+        by <strong>noahc3</strong> (2018–2024), released under the MPL-2.0. Thank you, noahc3.
+      </p>
+      <p>SwitchSetup is free and has no ads. <button class="linkbtn" data-support>Support the project ♥</button></p>
+      <p>Every package belongs to its authors and is downloaded from their official GitHub releases.</p>
+      <p class="disclaimer">Not affiliated with, endorsed by or sponsored by Nintendo. "Nintendo Switch" is a trademark of Nintendo. SwitchSetup does not provide or support piracy.</p>
+    </div>
+  </footer>
+
+  <!-- Build progress / result -->
+  <dialog id="buildDlg" class="dlg">
+    <div class="dlg-body">
+      <div id="buildRunning">
+        <h3 id="phase">Starting…</h3>
+        <div class="progress"><div id="bar"></div></div>
+        <ol class="phases" id="phases"></ol>
+        <details>
+          <summary>Details</summary>
+          <pre id="log"></pre>
+        </details>
+      </div>
+      <div id="buildDone" hidden></div>
+    </div>
+  </dialog>
+
+  <dialog id="creditsDlg" class="dlg">
+    <div class="dlg-body">
+      <h3>Credits</h3>
+      <p><strong>noahc3</strong> created Homebrew SD Setup (sdsetup.com), the project SwitchSetup is built on. The idea, the original code and years of work are theirs.</p>
+      <p>Package authors:</p>
+      <ul id="creditList" class="credit-list"></ul>
+      <p>Recommended configuration follows <a href="https://switch.hacks.guide" target="_blank" rel="noopener">switch.hacks.guide</a> by the Nintendo Homebrew community.</p>
+      <div class="dlg-actions"><button class="btn btn-primary" data-close>Close</button></div>
+    </div>
+  </dialog>
+
+  <dialog id="supportDlg" class="dlg">
+    <div class="dlg-body">
+      <div class="support-hero">
+        <svg viewBox="0 0 24 24" width="30" height="30" aria-hidden="true"><path fill="currentColor" d="M12 21.35 10.55 20C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09A6 6 0 0 1 16.5 3C19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+      </div>
+      <h3>Keep SwitchSetup going</h3>
+      <p id="supportMsg" class="muted"></p>
+      <div id="supportLinks" class="support-links"></div>
+      <p class="muted small">Want to support the people who make the homebrew itself? Each package's author is listed under <button class="linkbtn" id="supportToCredits">Credits</button>, and many of them accept donations too.</p>
+      <div class="dlg-actions"><button class="btn btn-quiet" data-close>Close</button></div>
+    </div>
+  </dialog>
+
+  <div id="toast" class="toast" role="status" hidden></div>
+
+  <script src="app.js"></script>
+</body>
+</html>

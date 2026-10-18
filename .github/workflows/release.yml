@@ -1,0 +1,37 @@
+# Builds SwitchSetup.exe and publishes it as a GitHub release.
+# To release: git tag v2.1.0 && git push origin v2.1.0
+# The website's Download button always points at the newest release.
+name: Release
+
+on:
+  push:
+    tags: [ "v*" ]
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Publish single-file exe
+        shell: bash
+        run: |
+          VERSION="${GITHUB_REF_NAME#v}"
+          dotnet publish app/SwitchSetup.csproj -c Release -r win-x64 -o out -p:Version="$VERSION"
+          cd out && sha256sum SwitchSetup.exe > SwitchSetup.exe.sha256
+
+      - name: Create release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: SwitchSetup ${{ github.ref_name }}
+          generate_release_notes: true
+          files: |
+            out/SwitchSetup.exe
+            out/SwitchSetup.exe.sha256

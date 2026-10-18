@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SwitchSetup: set up your Switch SD card in minutes</title>
+  <meta name="description" content="Free Windows app that downloads the latest Atmosphère, Hekate and homebrew from their official releases and puts every file on your SD card exactly where it belongs.">
+  <link rel="canonical" href="https://switchsetup.app/">
+  <link rel="icon" href="/img/logo.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/img/icon-512.png">
+  <meta name="theme-color" content="#0b0f1a">
+
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://switchsetup.app/">
+  <meta property="og:title" content="SwitchSetup: your Switch SD card, ready in minutes">
+  <meta property="og:description" content="Pick your homebrew. SwitchSetup downloads the latest official releases and writes them straight to your SD card.">
+  <meta property="og:image" content="https://switchsetup.app/img/og.png">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <header class="nav">
+    <div class="container nav-inner">
+      <a class="brand" href="/"><img src="/img/logo.svg" alt="" width="28" height="28"> SwitchSetup</a>
+      <nav class="links" aria-label="Main">
+        <a href="#features">Features</a>
+        <a href="#how">How it works</a>
+        <a href="#faq">FAQ</a>
+        <a class="gh" data-repo-link href="#">GitHub</a>
+        <a class="heart" href="https://ko-fi.com/osatks" target="_blank" rel="noopener">♥ Support</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container">
+        <p class="eyebrow">Free · Open source · No ads</p>
+        <h1>Your Switch SD card,<br><span class="grad">ready in minutes.</span></h1>
+        <p class="lead">Pick your homebrew. SwitchSetup downloads the latest official releases of Atmosphère, Hekate and your favourite apps, and writes every file to your SD card exactly where it belongs.</p>
+        <div class="cta">
+          <a class="btn btn-primary" data-download href="#">
+            <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M5 20h14v-2H5v2zM19 9h-4V3H9v6H5l7 7 7-7z"/></svg>
+            Download for Windows
+          </a>
+          <a class="btn btn-ghost" data-repo-link href="#">View source on GitHub</a>
+        </div>
+        <p class="fine" id="relInfo">Windows 10 and 11 · nothing to install, just run it</p>
+
+        <figure class="shot">
+          <img src="/img/screenshot.webp" width="1400" height="1000" alt="SwitchSetup showing package presets, the package list and an inserted SD card ready to update">
+        </figure>
+      </div>
+    </section>
+
+    <section id="features" class="section">
+      <div class="container">
+        <h2>Everything you need, nothing you don't</h2>
+        <p class="sub">Built to be the easiest and safest way to set up or update a homebrew SD card.</p>
+        <div class="features">
+          <article>
+            <div class="ico">⚡</div>
+            <h3>Always the latest versions</h3>
+            <p>Every file comes straight from the official GitHub release of each project. Nothing is re-hosted, so nothing goes stale.</p>
+          </article>
+          <article>
+            <div class="ico">💾</div>
+            <h3>Writes straight to your card</h3>
+            <p>Plug in your SD card and it's detected automatically. Prefer a ZIP? That works too.</p>
+          </article>
+          <article>
+            <div class="ico">🔄</div>
+            <h3>One-click updates</h3>
+            <p>SwitchSetup remembers what it installed and shows exactly which packages have updates the next time you plug the card in.</p>
+          </article>
+          <article>
+            <div class="ico">🛡️</div>
+            <h3>Safe by design</h3>
+            <p>It only lists removable drives, downloads everything before touching the card, and backs up your old files on clean updates.</p>
+          </article>
+          <article>
+            <div class="ico">🎮</div>
+            <h3>Keeps what matters</h3>
+            <p>Your games, saves, emuMMC, Nintendo folder and mods in <code>atmosphere/contents</code> are never touched.</p>
+          </article>
+          <article>
+            <div class="ico">⚙️</div>
+            <h3>Smart defaults</h3>
+            <p>Includes the switch.hacks.guide recommended configs: a ready boot menu and host files that block Nintendo's servers.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="how" class="section alt">
+      <div class="container">
+        <h2>Three steps. That's it.</h2>
+        <ol class="steps">
+          <li>
+            <span class="n">1</span>
+            <h3>Pick your packages</h3>
+            <p>Start from the Recommended preset or choose exactly what you want.</p>
+          </li>
+          <li>
+            <span class="n">2</span>
+            <h3>Insert your SD card</h3>
+            <p>It shows up automatically, with its format, free space and what's already on it.</p>
+          </li>
+          <li>
+            <span class="n">3</span>
+            <h3>Click Build</h3>
+            <p>Watch the progress, then eject the card and put it in your Switch.</p>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <h2>What's included</h2>
+        <p class="sub">Every package is optional except the two needed to boot. Each one belongs to its authors.</p>
+        <div class="pkgs">
+          <span><b>Atmosphère</b> custom firmware</span>
+          <span><b>Hekate &amp; Nyx</b> bootloader</span>
+          <span><b>Recommended configs</b></span>
+          <span><b>JKSV</b> save manager</span>
+          <span><b>Homebrew App Store</b></span>
+          <span><b>ftpd</b> FTP server</span>
+          <span><b>Checkpoint</b> saves</span>
+          <span><b>NX-Shell</b> file manager</span>
+          <span><b>Goldleaf</b> multitool</span>
+          <span><b>NXThemes Installer</b></span>
+          <span><b>TegraExplorer</b> payload</span>
+        </div>
+      </div>
+    </section>
+
+    <section id="faq" class="section alt">
+      <div class="container narrow">
+        <h2>Questions</h2>
+        <details>
+          <summary>Is it free?</summary>
+          <p>Yes, completely: no ads, no accounts, no tracking. If it saves you time, you can <a href="https://ko-fi.com/osatks" target="_blank" rel="noopener">support it on Ko-fi</a>.</p>
+        </details>
+        <details>
+          <summary>Windows says "Windows protected your PC". Is it safe?</summary>
+          <p>That message appears for new apps that aren't code-signed yet. Click <b>More info → Run anyway</b>. The app is open source, and it's built automatically from the code on GitHub, so you can check exactly what it does.</p>
+        </details>
+        <details>
+          <summary>Does this hack my Switch?</summary>
+          <p>No. SwitchSetup only prepares the SD card. To run custom firmware you need a console that can boot payloads (an unpatched Switch in RCM mode, or one with a modchip). Follow <a href="https://switch.hacks.guide" target="_blank" rel="noopener">switch.hacks.guide</a> to learn whether yours can, and how to set up an emuMMC.</p>
+        </details>
+        <details>
+          <summary>Will I get banned?</summary>
+          <p>Any homebrew carries some risk. The recommended configs reduce it: they block Nintendo's servers and hide your console's serial number on emuMMC. Keep homebrew on an emuMMC and stay offline in CFW.</p>
+        </details>
+        <details>
+          <summary>Will it delete my games or saves?</summary>
+          <p>No. It only replaces Atmosphère, Hekate and the apps you pick. A clean update backs up the old system files to your PC first.</p>
+        </details>
+        <details>
+          <summary>Does it support piracy?</summary>
+          <p>No. SwitchSetup doesn't include or link to piracy tools, signature patches or game files.</p>
+        </details>
+        <details>
+          <summary>Mac or Linux?</summary>
+          <p>Windows only for now. A version that runs in the browser is planned.</p>
+        </details>
+      </div>
+    </section>
+
+    <section class="section support">
+      <div class="container narrow center">
+        <div class="heart-badge">♥</div>
+        <h2>Keep SwitchSetup going</h2>
+        <p class="sub">SwitchSetup is free and ad-free. Donations pay for the domain and the time spent keeping packages working when projects change.</p>
+        <a class="btn btn-pink" href="https://ko-fi.com/osatks" target="_blank" rel="noopener">Support on Ko-fi</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="foot-top">
+        <a class="brand" href="/"><img src="/img/logo.svg" alt="" width="24" height="24"> SwitchSetup</a>
+        <nav aria-label="Footer">
+          <a data-repo-link href="#">GitHub</a>
+          <a href="https://switch.hacks.guide" target="_blank" rel="noopener">Guide</a>
+          <a href="https://ko-fi.com/osatks" target="_blank" rel="noopener">Ko-fi</a>
+        </nav>
+      </div>
+      <p>Based on <a href="https://github.com/noahc3/SDSetup" target="_blank" rel="noopener">Homebrew SD Setup</a> by <b>noahc3</b> (2018–2024), released under the MPL-2.0. Thank you, noahc3.</p>
+      <p>Every package belongs to its authors and is downloaded from their official releases.</p>
+      <p class="disc">Not affiliated with, endorsed by or sponsored by Nintendo. Nintendo Switch is a trademark of Nintendo. SwitchSetup does not provide or support piracy.</p>
+    </div>
+  </footer>
+
+  <script src="/site.js"></script>
+</body>
+</html>
