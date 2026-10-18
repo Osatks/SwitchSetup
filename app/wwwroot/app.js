@@ -95,6 +95,7 @@ function applyPreset(id) {
 function askConfirm(p) {
   return new Promise((resolve) => {
     const dlg = $("#confirmDlg");
+    if (!dlg) return resolve(window.confirm(p.confirm)); // page cached from before this dialog existed
     $("#confirmTitle").textContent = p.name;
     $("#confirmText").textContent = p.confirm;
     const done = (ok) => { dlg.close(); resolve(ok); };
