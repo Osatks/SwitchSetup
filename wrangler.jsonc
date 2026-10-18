@@ -1,0 +1,17 @@
+// Cloudflare Workers config for the switchsetup.app website (static files in ./web).
+// Cloudflare rebuilds and deploys automatically on every push to main.
+{
+  "$schema": "https://unpkg.com/wrangler@4/config-schema.json",
+  "name": "switchsetup",
+  "compatibility_date": "2026-10-13",
+  "assets": {
+    "directory": "./web",
+    "not_found_handling": "404-page",
+    "html_handling": "auto-trailing-slash"
+  },
+  "routes": [
+    { "pattern": "switchsetup.app", "custom_domain": true },
+    { "pattern": "www.switchsetup.app", "custom_domain": true }
+  ],
+  "workers_dev": true
+}

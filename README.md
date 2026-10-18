@@ -70,7 +70,7 @@ For development, set `SWITCHSETUP_TEST_CARD=C:\some\folder` to show that folder 
 | Folder | What it is |
 |---|---|
 | `app/` | The Windows app (.NET 8). The UI is in `app/wwwroot`, the package list in `app/catalog.json` |
-| `web/` | The switchsetup.app website, a static site hosted on Cloudflare Pages |
+| `web/` | The switchsetup.app website, static files served by Cloudflare Workers (config in `wrangler.jsonc`) |
 | `.github/workflows/` | `build.yml` checks every push. `release.yml` builds `SwitchSetup.exe` when you push a `v*` tag |
 
 ## Releasing a new version
