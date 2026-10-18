@@ -286,3 +286,6 @@ a.support-link:hover { border-color: #db2777; text-decoration: none; }
 .app-promo { font-size: 13px; color: var(--muted); border-top: 1px solid var(--line); padding-top: 12px; }
 .app-promo a { font-weight: 600; }
 .grow { flex: 1; min-width: 0; }
+
+/* Opt-in package warning */
+.confirm-text { white-space: pre-line; }

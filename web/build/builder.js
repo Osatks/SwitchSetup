@@ -111,14 +111,31 @@ function applyPreset(id) {
   } else {
     const p = state.catalog.presets.find((x) => x.id === id);
     if (!p) return;
-    state.selected = new Set(p.packages.includes("*") ? state.catalog.packages.map((x) => x.id) : p.packages);
+    // "*" means every package except opt-in ones (like sys-patch), which the user must turn on themselves.
+    state.selected = new Set(p.packages.includes("*") ? state.catalog.packages.filter((x) => !x.optIn).map((x) => x.id) : p.packages);
   }
   state.preset = id;
   normalizeSelection();
   save();
   renderAll();
 }
-function toggle(id, on) {
+/** Shows a package's warning and resolves true only if the user explicitly accepts it. */
+function askConfirm(p) {
+  return new Promise((resolve) => {
+    const dlg = $("#confirmDlg");
+    $("#confirmTitle").textContent = p.name;
+    $("#confirmText").textContent = p.confirm;
+    const done = (ok) => { dlg.close(); resolve(ok); };
+    $("#confirmYes").onclick = () => done(true);
+    $("#confirmNo").onclick = () => done(false);
+    dlg.oncancel = () => resolve(false);
+    dlg.showModal();
+  });
+}
+
+async function toggle(id, on) {
+  const p = pkg(id);
+  if (on && p?.confirm && !(await askConfirm(p))) { renderPackages(); return; }
   if (on) state.selected.add(id);
   else {
     const needer = [...state.selected].map(pkg).find((p) => p?.dependencies?.includes(id));

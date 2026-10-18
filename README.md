@@ -25,6 +25,7 @@ Not affiliated with, endorsed by or sponsored by Nintendo. SwitchSetup does not 
 - **Eject button** when it's done.
 - 20 packages, including overlays (Ultrahand, Status Monitor), controller support (MissionControl, sys-con), ldn_mitm, emuiibo, sys-clk, Fizeau and QuickNTP
 - Presets (Recommended / Recommended + extras / Minimal / Everything), search, category filters, and download sizes
+- Optional **sys-patch** (signature patches): off by default, not in any preset, and only added after confirming a warning. Not for piracy
 - Settings files you may have edited (sys-con, Fizeau, QuickNTP) are kept on updates; everything else is replaced with the new version
 - Recommended configs from switch.hacks.guide: `hekate_ipl.ini`, DNS-MITM host files that block Nintendo servers, and `exosphere.ini`.
 - Save or load your selection as a file. Light and dark themes follow Windows.

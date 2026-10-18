@@ -31,7 +31,12 @@ public record PackageDef(
     List<string>? Dependencies = null,
     List<AssetRule>? Assets = null,
     List<GeneratedFile>? Files = null,
-    List<string>? KeepExisting = null);
+    List<string>? KeepExisting = null,
+    bool OptIn = false,
+    string? Confirm = null);
+
+// PackageDef.OptIn: never selected by presets (not even "Everything"); the user must turn it on.
+// PackageDef.Confirm: text the user must accept before the package can be turned on.
 
 /// <summary>How to install one GitHub release asset.</summary>
 /// <param name="Match">Regex matched against the asset file name.</param>

@@ -443,6 +443,23 @@
       "keepExisting": [
         "^config/quickntp\\.ini$"
       ]
+    },
+    {
+      "id": "syspatch",
+      "name": "sys-patch (signature patches)",
+      "category": "sysmodules",
+      "authors": "impeeza, based on sys-patch by TotalJustice",
+      "description": "Patches the console's signature checks at boot, which some homebrew (such as forwarders and modified software) needs. Optional and off by default. Includes an overlay to check its status.",
+      "warning": "Not for piracy. Use only on an emuMMC that stays offline.",
+      "repo": "impeeza/sys-patch",
+      "optIn": true,
+      "confirm": "sys-patch turns off Nintendo's signature checks.\n\n• Using it to run pirated games is illegal, and SwitchSetup does not support piracy.\n• Consoles that go online with patched software get banned from Nintendo's online services. Only use it on an emuMMC that stays offline.\n\nAdd sys-patch to your SD card?",
+      "assets": [
+        {
+          "match": "^sys-patch-.*\\.zip$",
+          "action": "extract"
+        }
+      ]
     }
   ]
 }

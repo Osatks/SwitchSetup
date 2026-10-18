@@ -278,3 +278,6 @@ a.support-link:hover { border-color: #db2777; text-decoration: none; }
 .disclaimer { opacity: .8; font-size: 12px; margin-top: 10px !important; }
 
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+
+/* Opt-in package warning */
+.confirm-text { white-space: pre-line; }

@@ -159,6 +159,18 @@
     </div>
   </dialog>
 
+  <dialog id="confirmDlg" class="dlg">
+    <div class="dlg-body">
+      <div class="result-icon bad"><svg viewBox="0 0 24 24" width="28" height="28"><path fill="currentColor" d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/></svg></div>
+      <h3 id="confirmTitle"></h3>
+      <p id="confirmText" class="confirm-text"></p>
+      <div class="dlg-actions">
+        <button class="btn btn-primary" id="confirmNo">Cancel</button>
+        <button class="btn btn-quiet" id="confirmYes">I understand, add it</button>
+      </div>
+    </div>
+  </dialog>
+
   <div id="toast" class="toast" role="status" hidden></div>
 
   <script type="module" src="/build/builder.js"></script>
