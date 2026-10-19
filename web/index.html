@@ -3,21 +3,140 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>SwitchSetup: set up your Switch SD card in minutes</title>
-  <meta name="description" content="Free Windows app that downloads the latest Atmosphère, Hekate and homebrew from their official releases and puts every file on your SD card exactly where it belongs.">
-  <link rel="canonical" href="https://switchsetup.app/">
+  <title>SwitchSetup: Switch SD card setup with Atmosphère &amp; Hekate, online</title>
+  <meta name="description" content="Set up your Nintendo Switch SD card online for free. Pick Atmosphère, Hekate and homebrew, get the latest official releases as a ZIP or write them straight to your SD card.">
+  <link rel="icon" href="/favicon.ico" sizes="any">
   <link rel="icon" href="/img/logo.svg" type="image/svg+xml">
-  <link rel="apple-touch-icon" href="/img/icon-512.png">
+  <link rel="icon" href="/img/icon-48.png" sizes="48x48" type="image/png">
+  <link rel="apple-touch-icon" href="/img/apple-touch-icon.png">
+  <link rel="canonical" href="https://switchsetup.app/">
   <meta name="theme-color" content="#0b0f1a">
 
   <meta property="og:type" content="website">
+  <meta property="og:site_name" content="SwitchSetup">
+  <meta property="og:locale" content="en_US">
   <meta property="og:url" content="https://switchsetup.app/">
   <meta property="og:title" content="SwitchSetup: your Switch SD card, ready in minutes">
   <meta property="og:description" content="Pick your homebrew. SwitchSetup downloads the latest official releases and writes them straight to your SD card.">
   <meta property="og:image" content="https://switchsetup.app/img/og.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="SwitchSetup: build your Switch SD card">
   <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="SwitchSetup: your Switch SD card, ready in minutes">
+  <meta name="twitter:description" content="Pick your homebrew. SwitchSetup gets the latest official releases and builds your SD card online.">
+  <meta name="twitter:image" content="https://switchsetup.app/img/og.png">
 
   <link rel="stylesheet" href="/style.css">
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "SwitchSetup",
+  "url": "https://switchsetup.app/"
+}
+  </script>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "SwitchSetup",
+  "url": "https://switchsetup.app/",
+  "description": "Free, open-source tool that builds a Nintendo Switch homebrew SD card from the latest official releases of Atmosphère, Hekate and homebrew apps.",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "Web, Windows 10, Windows 11",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "image": "https://switchsetup.app/img/og.png",
+  "screenshot": "https://switchsetup.app/img/screenshot.webp",
+  "downloadUrl": "https://github.com/Osatks/SwitchSetup/releases/latest/download/SwitchSetup.exe",
+  "license": "https://www.mozilla.org/en-US/MPL/2.0/",
+  "isBasedOn": "https://github.com/noahc3/SDSetup"
+}
+  </script>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Is it free?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes, completely: no ads, no accounts, no tracking. If it saves you time, you can support it on Ko-fi."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Do I need to install anything?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. The online builder works in any modern browser. The Windows app is optional: it adds automatic SD card detection, an eject button and backups on your PC."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What happens to files that already exist on my card?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Files with the same name are replaced with the new versions, with no errors or prompts when writing directly to the card. When extracting a ZIP yourself, choose Replace the files in the destination. Your games, saves and other files are left alone."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Windows says \"Windows protected your PC\" for the app. Is it safe?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "That message appears for new apps that aren't code-signed yet. Click More info → Run anyway. The app is open source, and it's built automatically from the code on GitHub, so you can check exactly what it does."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does this hack my Switch?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. SwitchSetup only prepares the SD card. To run custom firmware you need a console that can boot payloads (an unpatched Switch in RCM mode, or one with a modchip). Follow switch.hacks.guide to learn whether yours can, and how to set up an emuMMC."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Will I get banned?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Any homebrew carries some risk. The recommended configs reduce it: they block Nintendo's servers and hide your console's serial number on emuMMC. Keep homebrew on an emuMMC and stay offline in CFW."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Will it delete my games or saves?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. It only replaces Atmosphère, Hekate and the apps you pick. A clean update backs up the old system files to your PC first."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does it support piracy?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. SwitchSetup never includes or links to game files, keys or piracy tools. An optional sys-patch module (signature patches) is available for homebrew that needs it. It's off by default, isn't part of any preset, and asks you to confirm a warning before it can be added. Using it to run pirated games is illegal."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Mac or Linux?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes: use the online builder. It works on every system. Writing straight to the SD card needs Chrome, Edge or Opera; in other browsers, download the ZIP."
+      }
+    }
+  ]
+}
+  </script>
 </head>
 <body>
   <header class="nav">

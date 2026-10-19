@@ -1,7 +1,7 @@
 // SwitchSetup website backend (Cloudflare Worker).
-// Static files in ./web are served directly by Cloudflare. This script only
-// handles /api/*, which lets the in-browser builder fetch GitHub release files
-// (GitHub doesn't allow browsers to download them directly).
+// Redirects every other hostname (www., *.workers.dev) to https://switchsetup.app,
+// serves the static site from ./web, and handles /api/*, which lets the in-browser builder
+// fetch GitHub release files (GitHub doesn't allow browsers to download them directly).
 //
 // It is NOT an open proxy: it only serves files from the latest release of the
 // repositories listed in app/catalog.json.
@@ -17,9 +17,24 @@ const CACHE_HOST = "https://cache.switchsetup.internal";
 
 const repos = [...new Set(catalog.packages.filter((p) => p.repo).map((p) => p.repo))];
 
+const CANONICAL_HOST = "switchsetup.app";
+const LOCAL_HOSTS = new Set(["127.0.0.1", "localhost"]);
+
 export default {
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
+
+    // One address for search engines: send www. and *.workers.dev to https://switchsetup.app.
+    // (No http check needed: .app domains are HTTPS-only in every browser via HSTS preload.)
+    if (!LOCAL_HOSTS.has(url.hostname) && url.hostname !== CANONICAL_HOST) {
+      url.hostname = CANONICAL_HOST;
+      url.protocol = "https:";
+      url.port = "";
+      return Response.redirect(url.toString(), 301);
+    }
+
+    if (!url.pathname.startsWith("/api/")) return env.ASSETS.fetch(request);
+
     if (request.method !== "GET" && request.method !== "HEAD") {
       return json({ error: "Method not allowed" }, 405);
     }
@@ -39,6 +54,7 @@ function json(data, status = 200, maxAge = 0) {
     status,
     headers: {
       "content-type": "application/json; charset=utf-8",
+      "x-robots-tag": "noindex",
       "cache-control": maxAge ? `public, max-age=${maxAge}` : "no-store",
     },
   });
